@@ -1,0 +1,77 @@
+<?php
+	class User extends CI_Model {
+    function __construct()
+    {
+        parent::__construct();
+        $this->load->database();
+    }
+ 
+    function register($name,$username,$pwd)
+    {
+         
+        $res = $this->db->get_where('users',array('username' => $username));
+        
+	
+	if ($res->num_rows() > 0) {
+            return 'Username already exists';
+        }
+        // username is unique
+        $hashpwd = sha1($pwd);
+        $data = array('real_name' => $name,'username' => $username,
+                      'password' => $hashpwd);
+        $this->db->insert('users',$data);
+        return null; // no error message because all is ok
+    }
+
+	function login($username,$pwd)
+	{
+		//$getId = " SELECT user_id FROM logins WHERE user_id = $username ";
+		
+    		
+
+    		$res = $this->db->get_where('users',array('username' => $username,'password' => sha1($pwd)));
+    		//$res = $this->db->get();
+    		if ($res->num_rows() != 1) { // should be only ONE matching row!!
+        	return false;
+    		}
+ 
+    	// remember login
+    	$session_id = $this->session->userdata('session_id');
+    	// remember current login
+    	$row = $res->row_array();
+
+	// When saving the session in the logins we also need to save the user id
+	// therefore we will extract the user id from the user table where the username
+	// corresponds to the one in the session
+	
+	$getIdFromName = " SELECT user_id FROM users WHERE username ='$username'  ";
+	$all = $this->db->query($getIdFromName);
+	
+	foreach ($all->result_array() as $result) {
+	
+    	$user_id = $result['user_id'];
+	}
+	
+	// Now that we have the id we will insert all the details of the login in the login table
+    	$this->db->insert('logins',array('name' => $row['username'],'session_id' => $session_id , 'user_id' => $user_id));
+    	return $res->row_array();
+	}
+ 
+	function is_loggedin()
+	{
+    		$session_id = $this->session->userdata('session_id');
+    		$res = $this->db->get_where('logins',array('session_id' => $session_id));
+    		if ($res->num_rows() == 1) {
+        		$row = $res->row_array();
+        		return $row['name'];
+    		}
+    		else {
+        		return false;
+    		}
+}
+
+	
+
+
+}
+?>

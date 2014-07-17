@@ -1,0 +1,70 @@
+<?php
+
+	
+ 	class Auth extends CI_Controller {
+ 
+    	function __construct()
+    	{
+        parent::__construct();
+        $this->load->library('authlib');
+        $this->load->helper('url');
+    	}
+ 
+     
+	public function index()
+	{
+    		$this->load->view('loginPage');
+	}
+ 
+	public function register()
+	{
+    		$this->load->view('registrationPage',array('errmsg' => ''));
+	}
+ 
+	public function login(){
+
+		if($this->authlib->is_loggedin()){
+
+		echo "you are logged in";
+		}
+		else{
+		$uname=$this->input->post('uname');
+		$pass=$this->input->post('password');
+		if (($data = $this->authlib->login($uname,$pass))) {
+		
+		//print_r($data);
+        	//redirect('https://w1345392.users.ecs.westminster.ac.uk/ecwm604/code_igniter/index.php/homepage/');
+		$this->load->view('homeView',$data);
+    		}
+    		else {
+        	$data['errmsg'] = $errmsg;
+        	
+    		print_r($data);
+		}
+		//echo $uname . $pass;
+	}
+}
+	public function createAccount()
+	{
+    		$name = $this->input->post('name');
+    		$username = $this->input->post('uname');
+    		$password = $this->input->post('password');
+    		$conf_password = $this->input->post('conf_password');
+ 
+    		if (!($errmsg = $this->authlib->register($name,$username,$password,$conf_password))) {
+        	redirect('https://w1345392.users.ecs.westminster.ac.uk/ecwm604/code_igniter/index.php/homepage/');
+    		}
+    		else {
+        	$data['errmsg'] = $errmsg;
+        	$this->load->view('register_view',$data);
+    		}
+	}
+
+	public function logout(){
+	
+	$this->session->sess_destroy();
+	redirect('https://w1345392.users.ecs.westminster.ac.uk/ecwm604/code_igniter/index.php/homepage/');
+    			
+}
+
+}// closing

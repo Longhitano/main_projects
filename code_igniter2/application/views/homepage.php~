@@ -1,0 +1,33 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+  "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+
+<title>Code Eaters</title>
+<link href="<?php echo base_url('assets/css/homeCSS'); ?>" type="text/css" rel="stylesheet" />
+</head>
+<body>
+
+<div id="container">
+	<div id="header">
+		<div id="logo">Logo</div>
+		<div id="login"><a href="www.google.com">login | register</a></div>
+		<div id="navbar">
+			<ul id="nav">
+				<li>Home</li>
+				<a href=""><li>Ask a question</li></a>			
+				<li>Categories</li>
+				<li>Contacts/FAQ</li>			
+			</ul>		
+		
+		</div>
+	</div>
+
+<div id="content">
+<div id="main"></div>
+<div id="footer">footer</div>	
+</div>
+
+</div>
+</body>
+</html>

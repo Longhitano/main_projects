@@ -1,0 +1,63 @@
+<?php
+
+	class Access extends CI_Controller {
+ 
+    	 public function __construct()
+        {
+                parent::__construct();
+                $this->load->model('question');
+        }
+ 
+        function displayQuestion(){
+
+		$this->load->view('askQuestion');
+
+	}
+
+	function displaySearch(){
+
+		$this->load->view('search');
+
+	}
+
+	function search(){
+	
+		$data['author'] = $this->input->post('author');
+		$data['question'] = $this->input->post('question');
+		$question = $this->question->searchData($data);
+
+		//$this->load->view('results');
+		
+
+	} 
+         
+         
+        public function update()
+        {	
+		
+		//add if isset()
+		$data['author'] = $this->input->post('author');
+		$data['question'] = $this->input->post('question');
+
+                $qnumber = $this->question->insertData($data);
+
+
+
+
+		/*
+		// in the model
+		//loading the db and updating the content
+			
+	 	$this->load->database();        	
+        	
+        	$data['result'] = array("foo", "bar", "hallo", "world");
+                
+		$this->db->select('*');
+                $this->db->from('Questions');
+                
+                $query=$this->db->get();
+                $data = $query->result();
+           	$this->load->view('askQuestion',$data);
+      */  
+}
+}

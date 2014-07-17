@@ -1,0 +1,21 @@
+	
+	class Question extends CI_Model {
+    	
+	function __construct()
+	    {
+	       parent::__construct();	
+	       $this->load->database();
+	    }
+ 
+        function insertQuestion($question) {
+        if ($question == null || $question == '') {
+                return false;
+            }
+ 
+        $this->db->where('q_number',$name);
+        $res = $this->db->get('user_table');
+        $data = $res->row_array(); // only want 1st result as array
+        $res->free_result();
+        return $data;
+    }
+}        
